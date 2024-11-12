@@ -1,0 +1,28 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+<!-- Hero Section -->
+        
+{% if self.banner_title %}
+    <section id="hero" class="hero section dark-background">
+        {% if self.banner_image %}
+            {% image self.banner_image fill-900x400 as img %}
+            <img src="{{ img.url }}" alt="{{ img.alt }}" data-aos="fade-in">
+        {% endif %}
+    
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-start">
+            <div class="col-lg-8">
+                <h2>{{ self.banner_title }}</h2>
+                <p>{{ self.banner_subtitle }}</p>
+                {% if self.banner_cta_link %}
+                    <a href="{% pageurl banner.banner_cta_link %}" class="btn-get-started" target="_blank">{{ self.banner_cta }}</a>
+                {% elif self.banner_cta_url %}
+                    <a href="{{ banner.banner_cta_url }}" class="btn-get-started" target="_blank" >{{ self.banner_cta }}</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+        
+    </section>
+{% endif %}
+
+<!-- /Hero Section -->
