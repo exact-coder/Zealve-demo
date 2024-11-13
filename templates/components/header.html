@@ -49,9 +49,20 @@
               </ul>
             </li>
             <li><a href="#contact">Contact</a></li>
+            
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+
+        <div class="user_authentication">
+          {% if user.is_authenticated %}
+            <div class="user_avator d-inline">{{user.username}} </div>
+            <a href="#" class="user_logout btn btn-light text-bold">Logout</a>
+          {% else %}
+            <a href="#" class="user_login btn btn-primary text-bold">Login</a>
+          {% endif %}
+
+        </div>
       </div>
 
     </div>

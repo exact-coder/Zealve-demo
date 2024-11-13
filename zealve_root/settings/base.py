@@ -35,6 +35,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third-Party App
+    # Django-allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -46,7 +54,41 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    },
+    'github': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    },
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    },
+}
 
 ROOT_URLCONF = "zealve_root.urls"
 
@@ -69,6 +111,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "zealve_root.wsgi.application"
+
+AUTHENTICATION_BACKENDS = [
+
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 # Database
@@ -171,3 +219,22 @@ WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'tx
 
 
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
+
+# Django Allauth Settings
+LOGIN_URL='/login/'
+LOGIN_REDIRECT_URL ='/'
+ACCOUNT_AUTHENTICATION_METHOD="username_email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET=True
+ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_NOTIFICATIONS=True
+ACCOUNT_EMAIL_VERIFICATION="mandatory"
+ACCOUNT_RATE_LIMITS=10
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_SESSION_REMEMBER=True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE=False
+ACCOUNT_USERNAME_MIN_LENGTH=3
+
+SOCIALACCOUNT_EMAIL_REQUIRED =True
