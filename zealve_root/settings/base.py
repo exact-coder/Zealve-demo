@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
 ]
@@ -58,23 +57,10 @@ MIDDLEWARE = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    },
     'github': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
         'APP': {
-            'client_id': '123',
-            'secret': '456',
+            'client_id': 'Ov23li7hhzE7rU2jS0XG',
+            'secret': 'ca9ac3a490bb7ae5db9a9c7faaf94a065b17eec3',
             'key': ''
         }
     },
@@ -83,8 +69,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '123',
-            'secret': '456',
+            'client_id': '1089203635597-6kjrmjefpeed8pp7lfm4to44q8hbqfu2.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
         }
     },
@@ -238,3 +224,4 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE=False
 ACCOUNT_USERNAME_MIN_LENGTH=3
 
 SOCIALACCOUNT_EMAIL_REQUIRED =True
+SOCIALACCOUNT_LOGIN_ON_GET=True
