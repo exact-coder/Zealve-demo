@@ -56,10 +56,10 @@
 
         <div class="user_authentication">
           {% if user.is_authenticated %}
-            <div class="user_avator d-inline">{{user.username}} </div>
-            <a href="#" class="user_logout btn btn-light text-bold">Logout</a>
-          {% else %}
-            <a href="#" class="user_login btn btn-primary text-bold">Login</a>
+            <div class="user_avator d-inline">{{user.username}}, </div>
+            <a href="{% url "account_logout" %}" class="user_logout fw-bolder text-ifo text-bold">Logout</a>
+          {% else %}<div class="user_avator d-inline">Hi Guest, </div>
+            <a href="{% url "account_login" %}" class="user_login fw-bold textprimary text-bold">Login</a>
           {% endif %}
 
         </div>
