@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load allauth i18n %}
+{% load socialaccount %}
+{% load allauth account %}
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}
@@ -58,11 +60,11 @@
 }
 
 .login_form .login_option .option a:hover {
-    background: #ededf5;
-    border-color: #cc1616;
+    background: #cc1616;
+    color: #F8F8FB;
 }
 
-.login_form .login_option .option a img {
+.login_form .login_option .option a i {
     max-width: 25px;
 }
 
@@ -99,6 +101,7 @@ form .input_box label {
     display: block;
     font-weight: 500;
     margin-bottom: 8px;
+    text-align: left;
 }
 
 /* Input field styling */
@@ -159,23 +162,25 @@ form button:hover {
 </style>
 <div class="login_form">
     <!-- Login form container -->
-  <form action="#">
-      <h3>Log in with</h3>
+    {% url 'account_signup' as action_url %}
+  <form form=form method="post" action={{action_url}} tags="entrance,signup">
+    {% csrf_token %}
+      <h3>Sign Up with</h3>
 
       <div class="login_option">
         <!-- Google button -->
         <div class="option">
-          <a href="#">
+          <a href="{% provider_login_url 'google' %}">
             <i class="fab fa-google"></i>
             <span>Google</span>
           </a>
         </div>
 
-        <!-- Apple button -->
+        <!-- Github button -->
         <div class="option">
-          <a href="#">
+          <a href="{% provider_login_url 'github' %}">
             <i class="fab fa-github"></i>
-            <span>Apple</span>
+            <span>Github</span>
           </a>
         </div>
       </div>
@@ -187,39 +192,20 @@ form button:hover {
 
       <!-- Email input box -->
       <div class="input_box">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter email address" required />
+        {{form}}
       </div>
 
-      <!-- Paswwrod input box -->
-      <div class="input_box">
-        <div class="password_title">
-          <label for="password">Password</label>
-          <a href="#">Forgot Password?</a>
-        </div>
 
-        <input type="password" id="password" placeholder="Enter your password" required />
-      </div>
 
        <!-- Login button -->
-      <button type="submit">Log In</button>
+      <button type="submit" tags="prominent,signup">Sign Up</button>
 
-      <p class="sign_up">Don't have an account? <a href="#">Sign up</a></p>
+      <p class="sign_up">Already have an account? <a href="{{ login_url }}">Log In</a></p>
     </form>
-  </div>
+</div>
+
+<!-- Previous One -->
     <!-- <div class="m-3 p-3 text-center">
-        {% element h1 %}
-        {% trans "Sign Up" %}
-        {% endelement %}
-        {% setvar link %}
-            <a href="{{ login_url }}">
-            {% endsetvar %}
-            {% setvar end_link %}
-            </a>
-        {% endsetvar %}
-        {% element p %}
-            {% blocktranslate %}Already have an account? Then please {{ link }}sign in{{ end_link }}.{% endblocktranslate %}
-        {% endelement %}
         {% if not SOCIALACCOUNT_ONLY %}
             {% url 'account_signup' as action_url %}
             {% element form form=form method="post" action=action_url tags="entrance,signup" %}
@@ -242,9 +228,6 @@ form button:hover {
             {% element button href=signup_by_passkey_url tags="prominent,signup,outline,primary" %}
                 {% trans "Sign up using a passkey" %}
             {% endelement %}
-        {% endif %}
-        {% if SOCIALACCOUNT_ENABLED %}
-            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
         {% endif %}
     </div> -->
 {% endblock content %}

@@ -6,61 +6,197 @@
     {% trans "Log In" %}
 {% endblock head_title %}
 {% block content %}
-    <div class="text-center m-3">
-        {% element h1 %}
-        {% trans "Log In" %}
-        {% endelement %} <hr/>
-        {% if not SOCIALACCOUNT_ONLY %}
-            {% setvar link %}
-                <a href="{{ signup_url }}">
-                {% endsetvar %}
-                {% setvar end_link %}
-                </a>
-            {% endsetvar %}
-            {% element p %}
-                {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
-            {% endelement %}
-            {% url 'account_login' as login_url %}
-            {% element form form=form method="post" action=login_url tags="entrance,login" %}
-                {% slot body %}
-                    {% csrf_token %}
-                    {% element fields form=form unlabeled=True %}
-                    {% endelement %}
-                    {{ redirect_field }}
-                {% endslot %}
-                {% slot actions %}
-                    {% element button type="submit" tags="prominent,login" %}
-                        {% trans "Sign In" %}
-                    {% endelement %}
-                {% endslot %}
-            {% endelement %}
-        {% endif %}
-        {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
-            {% element hr %}
-            {% endelement %}
-            {% element button_group vertical=True %}
-                {% if PASSKEY_LOGIN_ENABLED %}
-                    {% element button type="submit" form="mfa_login" id="passkey_login" tags="prominent,login,outline,primary" %}
-                        {% trans "Sign in with a passkey" %}
-                    {% endelement %}
-                {% endif %}
-                {% if LOGIN_BY_CODE_ENABLED %}
-                    {% element button href=request_login_code_url tags="prominent,login,outline,primary" %}
-                        {% trans "Mail me a sign-in code" %}
-                    {% endelement %}
-                {% endif %}
-            {% endelement %}
-        {% endif %}
-        <div class="">
-            {% if SOCIALACCOUNT_ENABLED %}
-                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-            {% endif %}
+<style>
+    /* Google Fonts Link */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+/* Login form styling */
+.login_form {
+    width: 100%;
+    max-width: 435px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 41px 30px;
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.login_form h3 {
+    font-size: 20px;
+    text-align: center;
+}
+
+/* Google & Apple button styling */
+
+.login_form .login_option {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login_form .login_option .option {
+    width: calc(100% / 2 - 12px);
+}
+
+.login_form .login_option .option a {
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: #F8F8FB;
+    border: 1px solid #DADAF2;
+    border-radius: 5px;
+    margin: 34px 0 24px 0;
+    text-decoration: none;
+    color: #171645;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.login_form .login_option .option a:hover {
+    background: #cc1616;
+    color: #F8F8FB;
+}
+
+.login_form .login_option .option a i {
+    max-width: 25px;
+}
+
+.login_form p {
+    text-align: center;
+    font-weight: 500;
+}
+
+.login_form .separator {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+/* Login option separator styling */
+.login_form .separator span {
+    background: #fff;
+    z-index: 1;
+    padding: 0 10px;
+    position: relative;
+}
+
+.login_form .separator::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    height: 1px;
+    background: #C2C2C2;
+    display: block;
+}
+
+form .input_box label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* Input field styling */
+form .input_box input {
+    width: 100%;
+    height: 57px;
+    border: 1px solid #DADAF2;
+    border-radius: 5px;
+    outline: none;
+    background: #F8F8FB;
+    font-size: 17px;
+    padding: 0px 20px;
+    margin-bottom: 25px;
+    transition: 0.2s ease;
+}
+
+form .input_box input:focus {
+    border-color: #cc1616;
+}
+
+form .input_box .password_title {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+form .input_box {
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+    color: #cc1616;
+    font-weight: 500;
+}
+
+
+/* Login button styling */
+form button {
+    width: 100%;
+    height: 56px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: #cc1616;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: 0.3s ease;
+}
+
+form button:hover {
+    background: hsl(0, 100%, 57%);
+}
+</style>
+<div class="login_form">
+    <!-- Login form container -->
+{% url 'account_login' as login_url %}
+  <form method="post" form=form action={{login_url}} tags="entrance,login">
+    {% csrf_token %}
+      <h3>Login with</h3>
+
+      <div class="login_option">
+        <!-- Google button -->
+        <div class="option">
+          <a href="{% provider_login_url 'google' %}">
+            <i class="fab fa-google"></i>
+            <span>Google</span>
+          </a>
         </div>
-    </div>
+
+        <!-- Github button -->
+        <div class="option">
+          <a href="{% provider_login_url 'github' %}">
+            <i class="fab fa-github"></i>
+            <span>Github</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Login option separator -->
+      <p class="separator">
+        <span>or</span>
+      </p>
+
+      <!-- Form input box -->
+      <div class="input_box">
+        {{form}}
+      </div>
+
+       <!-- Login button -->
+        <button type="submit" tags="prominent,login">Log In</button>
+      <p class="sign_up">Don't have an account? <a href="{{ signup_url }}">Sign up</a></p>
+    </form>
+</div>
 {% endblock content %}
-{% block extra_body %}
-    {{ block.super }}
-    {% if PASSKEY_LOGIN_ENABLED %}
-        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
-    {% endif %}
-{% endblock %}
