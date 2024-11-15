@@ -161,8 +161,7 @@ form button:hover {
 </style>
 <div class="login_form">
     <!-- Login form container -->
-{% url 'account_login' as login_url %}
-  <form method="post" form=form action={{login_url}} tags="entrance,login">
+  <form method="post" form=form action="{% url 'account_login' %}"tags="entrance,login">
     {% csrf_token %}
       <h3>Login with</h3>
 
