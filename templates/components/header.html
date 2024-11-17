@@ -1,4 +1,6 @@
+{% load wagtailcore_tags navigation_tags wagtailuserbar static %}
 <header id="header" class="header fixed-top">
+
 
     <div class="topbar d-flex align-items-center">
       <div class="container d-flex justify-content-center justify-content-md-between">
@@ -23,11 +25,15 @@
           <!-- <img src="assets/img/logo.png" alt=""> -->
           <h1 class="sitename" style="color: #cc1616;text-decoration:none;">Zealve</h1>
         </a>
-
+        {% get_site_root as site_root %}
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#hero" class="active">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="{% pageurl site_root %}" class="active">Home</a></li>
+            {% for menuitem in site_root.get_children.live.in_menu %}
+              <h1>{{ menuitem }}</h1>
+              <li><a href="{% pageurl menuitem %}">{{ menuitem.title}}</a></li>
+            {% endfor %}
+            {% comment %} <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
             <li><a href="#team">Team</a></li>
@@ -48,7 +54,7 @@
                 <li><a href="#">Dropdown 4</a></li>
               </ul>
             </li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact">Contact</a></li> {% endcomment %}
             
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
